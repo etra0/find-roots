@@ -1,0 +1,25 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+METHODS.bisection	./js/canvas.js	/^	'bisection': bisection$/;"	p
+METHODS.newton	./js/canvas.js	/^	'newton': newton,$/;"	p
+METHODS.secant	./js/canvas.js	/^	'secant': secant,$/;"	p
+current_method	./js/canvas.js	/^var current_method = 'secant';$/;"	v
+first_time	./js/canvas.js	/^var first_time = true;$/;"	v
+generate_data	./js/canvas.js	/^function generate_data(f) {$/;"	f
+height	./js/canvas.js	/^var height = 800,$/;"	v
+lineFunction	./js/canvas.js	/^var lineFunction = d3.line()$/;"	v
+max	./js/canvas.js	/^var max = 200;$/;"	v
+poly	./js/canvas.js	/^function poly(x) {$/;"	f
+secant	./js/main.js	/^function secant() {$/;"	f
+secant.secant_line	./js/main.js	/^	function secant_line(x, f) {$/;"	f
+secant.updateData	./js/main.js	/^	function updateData() {$/;"	f
+secant.update_xs	./js/main.js	/^	function update_xs(f) {$/;"	f
+x0	./js/main.js	/^var x0 = -10,$/;"	v
+x_axis	./js/canvas.js	/^var x_axis = d3.axisBottom(x_scale);$/;"	v
+x_scale	./js/canvas.js	/^var x_scale = d3.scaleLinear()$/;"	v
+y_axis	./js/canvas.js	/^var y_axis = d3.axisLeft(y_scale);$/;"	v
+y_scale	./js/canvas.js	/^var y_scale = d3.scaleLinear()$/;"	v

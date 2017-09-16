@@ -2,12 +2,17 @@ var max = 200;
 var first_time = true;
 
 var METHODS = {
-	'newton': newton,
-	'secant': secant,
-	'bisection': bisection
+	'secant': secant
+	//'newton': newton,
+	//'bisection': bisection
 };
 
-$("#
+
+var current_method = new METHODS['secant'];
+$("#types").click(function() {
+	current_method = $(this).serializeArray()[0].value;
+	current_method = new METHODS[current_method]();
+});
 
 // funcion del polinomio
 function poly(x) {
@@ -47,6 +52,9 @@ var lineFunction = d3.line()
 	.x(function(d) { return x_scale(d.x); })
 	.y(function(d) { return y_scale(d.y); })
 
+var data = generate_data(poly);
+var line_data = current_method.generated_data;
+
 var canvas = d3.select("#canvas")
 	.append('svg')
 	.attr('width', width)
@@ -60,9 +68,9 @@ canvas.append('path')
 	.attr('class', 'path');
 
 canvas.append('path')
-	.attr('d', lineFunction(sec))
+	.attr('d', lineFunction(line_data))
 	.attr('fill', 'none')
-	.attr('stroke', 'none')
+	.attr('stroke', 'red')
 	.attr('id', 'sec')
 	.attr('class', 'path');
 
@@ -84,3 +92,43 @@ canvas.append('g')
 	.call(y_axis);
 
 /* ------------ end d3 definitions ------------ */
+function updateData() {
+	if (first_time) {
+		_x0 = document.getElementById('x0');
+		_x1 = document.getElementById('x1');
+
+		if (_x0.value != '') {
+			x0 = +_x0.value;
+		}
+
+		if (_x1.value != '') {
+			x1 = +_x1.value;
+		}
+	}
+
+	if (Math.abs(x1 - x0) > 1e-5) {
+		current_method.update_xs(poly)
+		_x0.value = x0;
+		_x1.value = x1;
+		for (i = 0; i < line_data.length; i++) {
+			line_data[i].y = current_method.pendiente(line_data[i].x, poly);
+		}
+	}
+	var canvas = d3.select('#canvas').transition();
+
+	canvas.select('#sec')
+		.duration(750)
+		.attr("d", lineFunction(line_data))
+		.attr('stroke', color_scale(Math.abs(x1-x0)));
+
+	var xs = [
+		{x: x0, y: poly(x0)},
+		{x: x1, y: poly(x1)}
+	]
+	canvas.selectAll('.circle')
+		.duration(750)
+		.attr('cx', function(d, i) { return x_scale(xs[i].x);})
+		.attr('cy', function(d, i) {return y_scale(xs[i].y);})
+
+	first_time = false;
+}
