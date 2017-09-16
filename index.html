@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+	<title>p5js</title>
+  </head>
+  <body>
+  <style>
+	  svg {
+		  border: 1px black solid;
+	  }
+	  .frame {
+		  display: flex;
+	  }
+
+	  #option {
+		  margin-left: 100px;
+	  }
+
+	  input {
+		  margin-top: 10px;
+	  }
+	  .path {
+		  stroke-width: 3;
+	  }
+  </style>
+	
+  <div class="frame">
+	  <div id="canvas"></div>
+
+	  <div id="option">
+		  <form id="types">
+			  <input type='radio' name='type-of-solution' value='secant'>Secante<br>
+			  <input type='radio' name='type-of-solution' value='newton'>Newton<br>
+			  <input type='radio' name='type-of-solution' value='bisection'>Bisección<br>
+		  </form>
+	  x0: <input type='text' id=x0><br>
+	  x1: <input type='text' id=x1><br>
+		<input name="updateButton" 
+		  type="button" 
+		  value="Update" 
+		  onclick="updateData()" />
+	  </div> 
+  </div>
+  <script src="js/d3.js"></script>
+  <script src="js/main.js"></script>
+  </body>
+</html>
+
