@@ -34,12 +34,16 @@
 			  <input type='radio' name='type-of-solution' value='newton'>Newton<br>
 			  <input type='radio' name='type-of-solution' value='bisection'>Bisección<br>
 		  </form>
-	  x0: <input type='text' id=x0><br>
-	  x1: <input type='text' id=x1><br>
-		<input name="updateButton" 
-		  type="button" 
-		  value="Update" 
-		  onclick="updateData()" />
+		  <form id='points'>
+			  <div id='inner-points'>
+				  x0: <input type='text' id=x0><br>
+				  x1: <input type='text' id=x1><br>
+			  </div>
+			  <input name="updateButton" 
+			  type="button" 
+			  value="Update" 
+			  onclick="updateData()" />
+		  </form>
 	  </div> 
   </div>
   <script src="js/d3.js"></script>

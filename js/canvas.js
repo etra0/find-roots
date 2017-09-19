@@ -2,16 +2,31 @@ var max = 200;
 var first_time = true;
 
 var METHODS = {
-	'secant': secant
+	'secant': secant,
 	//'newton': newton,
-	//'bisection': bisection
+	'bisection': bisection
 };
 
 
-var current_method = new METHODS['secant'];
+// current method contiene la version string del metodo
+var current_method = 'secant';
+
+// instance_method contendra la instancia del metodo seleccionado
+var instance_method = new METHODS[current_method];
 $("#types").click(function() {
+
 	current_method = $(this).serializeArray()[0].value;
-	current_method = new METHODS[current_method]();
+
+	if (current_method === 'secant' || current_method === 'bisection') {
+		$("#inner-points").empty();
+		$("#inner-points").append( 
+		`
+		  x0: <input type='text' id=x0><br>
+		  x1: <input type='text' id=x1><br>
+		`
+		);
+	} 
+	instance_method = new METHODS[current_method]();
 });
 
 // funcion del polinomio
@@ -53,7 +68,7 @@ var lineFunction = d3.line()
 	.y(function(d) { return y_scale(d.y); })
 
 var data = generate_data(poly);
-var line_data = current_method.generated_data;
+var line_data = instance_method.generated_data;
 
 var canvas = d3.select("#canvas")
 	.append('svg')
@@ -94,24 +109,28 @@ canvas.append('g')
 /* ------------ end d3 definitions ------------ */
 function updateData() {
 	if (first_time) {
-		_x0 = document.getElementById('x0');
-		_x1 = document.getElementById('x1');
-
-		if (_x0.value != '') {
-			x0 = +_x0.value;
+		// primero obtenemos los valores de los campos
+		var string_values = [];
+		var html_point = '';
+		for (i = 0; i < instance_method.dots.length; i++ ) {
+			string_values.push(document.getElementById('x' + i));
 		}
-
-		if (_x1.value != '') {
-			x1 = +_x1.value;
+		
+		if (current_method === 'secant' || current_method === 'bisection') {
+			for (i = 0; i < instance_method.dots.length; i++) {
+				if (string_values[i].value != '') {
+					instance_method.dots[i] = +string_values[i].value
+				}
+			}
 		}
 	}
 
 	if (Math.abs(x1 - x0) > 1e-5) {
-		current_method.update_xs(poly)
+		instance_method.update_xs(poly)
 		_x0.value = x0;
 		_x1.value = x1;
 		for (i = 0; i < line_data.length; i++) {
-			line_data[i].y = current_method.pendiente(line_data[i].x, poly);
+			line_data[i].y = instance_method.pendiente(line_data[i].x, poly);
 		}
 	}
 	var canvas = d3.select('#canvas').transition();
