@@ -1,5 +1,6 @@
 var max = 200;
 var first_time = true;
+var iteraciones = 0;
 
 var METHODS = {
 	'secant': secant,
@@ -26,6 +27,7 @@ $("#types").click(function() {
 		);
 	} 
 	instance_method = new METHODS[current_method]();
+	iteraciones = 0;
 });
 
 // funcion del polinomio
@@ -88,7 +90,7 @@ canvas.append('path')
 	.attr('class', 'path');
 
 canvas.selectAll('circle')
-	.data([{x: x0, y: poly(x0)}, {x: x1, y: poly(x1)}])
+	.data([{x: instance_method.dots[0], y: poly(instance_method.dots[0])}, {x: instance_method.dots[1], y: poly(instance_method.dots[1])}])
 	.enter()
 	.append('circle')
 		.attr('class', 'circle')
@@ -121,7 +123,10 @@ function updateData() {
 			instance_method.update_line();	
 		}
 	} else {
-		instance_method.update();
+		if (instance_method.update()) {
+			iteraciones++;
+			document.getElementById('iteraciones').innerText = iteraciones;
+		}
 	}
 
 	var canvas = d3.select('#canvas').transition();

@@ -43,7 +43,9 @@ function secant() {
 		if (Math.abs(self.dots[0] - self.dots[1]) > 1e-5) {
 			self.update_xs(poly);
 			self.update_line();
+			return true;
 		}
+		return false;
 	}
 }
 
@@ -77,8 +79,12 @@ function bisection() {
 	};
 
 	this.update = function() {
-		self.update_xs(null);
-		console.log(this.dots);
+		if (Math.abs(self.dots[0] - self.dots[1]) > 1e-5) {
+			self.update_xs(null);
+			console.log(this.dots);
+			return true;
+		}
+		return false;
 	}
 
 }
