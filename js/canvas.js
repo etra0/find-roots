@@ -7,7 +7,6 @@ var METHODS = {
 	'bisection': bisection
 };
 
-
 // current method contiene la version string del metodo
 var current_method = 'secant';
 
@@ -31,7 +30,6 @@ $("#types").click(function() {
 
 // funcion del polinomio
 function poly(x) {
-	//	return (x-1)*(x-2)*(x-4)*(x-3)*(x-6) + 1;
 	return Math.pow(x, 2) - 2;
 }
 
@@ -83,7 +81,7 @@ canvas.append('path')
 	.attr('class', 'path');
 
 canvas.append('path')
-	.attr('d', lineFunction(line_data))
+	.attr('d', lineFunction(instance_method.generated_data))
 	.attr('fill', 'none')
 	.attr('stroke', 'red')
 	.attr('id', 'sec')
@@ -117,37 +115,31 @@ function updateData() {
 		}
 		
 		if (current_method === 'secant' || current_method === 'bisection') {
-			for (i = 0; i < instance_method.dots.length; i++) {
-				if (string_values[i].value != '') {
+			for (i = 0; i < instance_method.dots.length; i++)
+				if (string_values[i].value != '')
 					instance_method.dots[i] = +string_values[i].value
-				}
-			}
+			instance_method.update_line();	
 		}
+	} else {
+		instance_method.update();
 	}
 
-	if (Math.abs(x1 - x0) > 1e-5) {
-		instance_method.update_xs(poly)
-		_x0.value = x0;
-		_x1.value = x1;
-		for (i = 0; i < line_data.length; i++) {
-			line_data[i].y = instance_method.pendiente(line_data[i].x, poly);
-		}
-	}
 	var canvas = d3.select('#canvas').transition();
 
 	canvas.select('#sec')
 		.duration(750)
-		.attr("d", lineFunction(line_data))
-		.attr('stroke', color_scale(Math.abs(x1-x0)));
+		.attr("d", lineFunction(instance_method.generated_data))
+		.attr('stroke', instance_method.color);
 
-	var xs = [
-		{x: x0, y: poly(x0)},
-		{x: x1, y: poly(x1)}
-	]
 	canvas.selectAll('.circle')
 		.duration(750)
-		.attr('cx', function(d, i) { return x_scale(xs[i].x);})
-		.attr('cy', function(d, i) {return y_scale(xs[i].y);})
+		.attr('cx', function(d, i) { return x_scale(instance_method.dots[i]);})
+		.attr('cy', function(d, i) {
+			if (current_method === 'secant')
+				return y_scale(poly(instance_method.dots[i]));
+			else if (current_method === 'bisection') 
+				return y_scale(0);
+		});
 
 	first_time = false;
 }
